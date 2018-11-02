@@ -1,5 +1,6 @@
 package com.github.devoxma.twitapp.domain.repository;
 
+import com.github.devoxma.twitapp.domain.exceptions.DaoException;
 import com.github.devoxma.twitapp.domain.model.Tweet;
 import com.github.devoxma.twitapp.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,17 +8,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public class TweetRepository {
-
-	private final JdbcTemplate jdbcTemplate;
+public class TweetRepository extends AbstractRepository<Tweet> {
 
 	@Autowired
 	public TweetRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+		super(jdbcTemplate);
 	}
 
 	public List<Tweet> findAll() {
@@ -32,10 +32,21 @@ public class TweetRepository {
 						"INNER JOIN users u ON t.user_id = u.id " +
 						"ORDER BY t.creation_date DESC";
 
-		return jdbcTemplate.query(sql, TWEET_ROW_MAPPER);
+		return findAll(sql, TWEET_ROW_MAPPER);
 	}
 
-	public Tweet findById(Long id) {
+	public Tweet save(User user, String message) {
+		String id = UUID.randomUUID().toString();
+		String userId = user.getId();
+		String sql = "INSERT INTO tweets(id, creation_date, message, user_id) VALUES ('" + id + "', NOW(), '" + message + "', '" + userId + "')";
+		jdbcTemplate.update(sql);
+
+		return findById(id).orElseThrow(() ->
+				new DaoException("Cannot find previously inserted tweet")
+		);
+	}
+
+	private Optional<Tweet> findById(String id) {
 		String sql =
 				"SELECT " +
 						"t.id as id, " +
@@ -45,26 +56,9 @@ public class TweetRepository {
 						"u.login as user_login " +
 						"FROM tweets t " +
 						"INNER JOIN users u ON t.user_id = u.id " +
-						"WHERE t.id = " + id;
+						"WHERE t.id = '" + id + "'";
 
-		return jdbcTemplate.queryForObject(sql, TWEET_ROW_MAPPER);
-	}
-
-	public Tweet save(User user, String message) {
-		Tweet tweet = new Tweet.Builder()
-				.withGeneratedId()
-				.withCreationDate(new Date())
-				.withUser(user)
-				.withMessage(message)
-				.build();
-
-		String sql =
-				"INSERT INTO tweets(id, creation_date, message, user_id) " +
-						"VALUES ('" + tweet.getId() + "', " + tweet.getCreationDate().getTime() + ", '" + tweet.getMessage() + "', " + tweet.getUser().getId() + ")";
-
-		jdbcTemplate.update(sql);
-
-		return tweet;
+		return findOne(sql, TWEET_ROW_MAPPER);
 	}
 
 	private static final RowMapper<Tweet> TWEET_ROW_MAPPER = (rs, rowNum) -> new Tweet.Builder()

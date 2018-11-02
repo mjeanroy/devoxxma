@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -31,12 +32,14 @@ public class TweetService {
 		this.tweetRepository = tweetRepository;
 	}
 
+	@Transactional(readOnly = true)
 	public List<TweetDto> findAll() {
 		log.info("Fetch Tweets");
 		List<Tweet> tweets = tweetRepository.findAll();
 		return tweetMapper.map(tweets);
 	}
 
+	@Transactional
 	public TweetDto create(@RequestBody @Valid TweetDto tweet) {
 		log.info("Save new tweet: {}", tweet);
 
