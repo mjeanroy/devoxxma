@@ -1,6 +1,5 @@
 package com.github.devoxma.twitapp.web.views;
 
-import com.github.devoxma.twitapp.security.Security;
 import com.github.devoxma.twitapp.web.dto.LoginDto;
 import com.github.devoxma.twitapp.web.services.AuthenticationService;
 import org.slf4j.Logger;
@@ -32,7 +31,6 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	@Security
 	public String doLogin(@Valid LoginDto loginDto, HttpServletResponse response) {
 		log.debug("Processing login authentication");
 		authenticationService.login(loginDto, response);
