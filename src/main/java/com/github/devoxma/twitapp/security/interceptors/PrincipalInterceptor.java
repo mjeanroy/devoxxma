@@ -35,12 +35,10 @@ public class PrincipalInterceptor extends HandlerInterceptorAdapter {
 		log.debug("Checking for authenticated user");
 
 		modelAndView.addObject("principal", null);
-		modelAndView.addObject("isAuthenticated", false);
 
 		securityService.login(request).ifPresent(principal -> {
 			log.debug("Injecting principal to rendered view");
 			modelAndView.addObject("principal", principal);
-			modelAndView.addObject("isAuthenticated", true);
 		});
 	}
 

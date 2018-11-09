@@ -116,6 +116,24 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot.version}</version>
       </plugin>
+
+      <plugin>
+        <groupId>com.github.mjeanroy</groupId>
+        <artifactId>node-maven-plugin</artifactId>
+        <version>0.2.0</version>
+        <executions>
+          <execution>
+            <id>run-npm</id>
+            <goals>
+              <goal>check</goal>
+              <goal>pre-clean</goal>
+              <goal>install</goal>
+              <goal>clean</goal>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

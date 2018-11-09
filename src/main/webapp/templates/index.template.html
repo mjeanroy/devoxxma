@@ -16,14 +16,14 @@
           </div>
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              {{#isAuthenticated}}
+              {{#principal}}
                 <li><a href="/">Home</a></li>
                 <li><a href="/tweets">Tweets</a></li>
                 <li><a href="/logout">Logout</a></li>
-              {{/isAuthenticated}}
-              {{^isAuthenticated}}
+              {{/principal}}
+              {{^principal}}
                 <li><a href="/login">Login</a></li>
-              {{/isAuthenticated}}
+              {{/principal}}
               </ul>
             </div>
           </div>
