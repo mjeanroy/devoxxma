@@ -2,7 +2,6 @@ package com.github.devoxma.twitapp.web.views;
 
 import com.github.devoxma.twitapp.domain.model.User;
 import com.github.devoxma.twitapp.security.Authenticated;
-import com.github.devoxma.twitapp.security.Security;
 import com.github.devoxma.twitapp.web.dto.TweetDto;
 import com.github.devoxma.twitapp.web.exceptions.InvalidTweetLoginException;
 import com.github.devoxma.twitapp.web.services.TweetService;
@@ -38,7 +37,6 @@ public class TweetController {
 	}
 
 	@PostMapping("/tweets")
-	@Security
 	public String postTweet(@Authenticated User principal, @Valid TweetDto tweet) {
 		if (!principal.getLogin().equals(tweet.getLogin())) {
 			throw new InvalidTweetLoginException();

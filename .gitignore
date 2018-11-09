@@ -11,3 +11,4 @@
 
 # Webapp
 /src/main/webapp/vendors
+/src/main/webapp/bundle.js

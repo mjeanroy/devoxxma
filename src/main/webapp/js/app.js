@@ -1,0 +1,69 @@
+import $ from 'jquery';
+
+function forEach(array, iteratee) {
+  for (let i = 0, size = array.length; i < size; ++i) {
+    iteratee(array[i], i, array);
+  }
+}
+
+function every(array, iteratee) {
+  for (let i = 0, size = array.length; i < size; ++i) {
+    if (!iteratee(array[i], i, array)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+const validators = {
+  required($input) {
+    const value = $input.val();
+    const required = $input.prop('required');
+    return !required || !!value;
+  },
+
+  maxlength($input) {
+    const value = $input.val();
+    const maxlength = $input.prop('maxlength');
+    return !maxlength || maxlength < 0 || value.length <= maxlength;
+  },
+};
+
+function checkInput($input) {
+  return every(Object.keys(validators), (validatorName) => (
+    validators[validatorName]($input)
+  ));
+}
+
+function checkForm($form) {
+  const $inputs = $form.find('input,textarea');
+
+  let formValid = true;
+
+  forEach($inputs, (input) => {
+    const $input = $(input);
+    const isValid = checkInput($input);
+
+    formValid = formValid && isValid;
+    $input.toggleClass('error', !isValid);
+  });
+
+  $form.toggleClass('error', !formValid);
+  $form.find('[type="submit"]').prop('disabled', !formValid);
+}
+
+function bindForm($form) {
+  $form.on('input', () => {
+    checkForm($form);
+  });
+}
+
+$(document).ready(() => {
+  forEach($(document).find('form'), (form) => {
+    const $form = $(form);
+
+    checkForm($form);
+    bindForm($form);
+  });
+});
