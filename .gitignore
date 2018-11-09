@@ -4,3 +4,10 @@
 
 # Maven
 /target
+
+# Node
+/node_modules
+/package-lock.json
+
+# Webapp
+/src/main/webapp/vendors

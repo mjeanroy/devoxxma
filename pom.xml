@@ -20,6 +20,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <spring-boot.version>1.5.2.RELEASE</spring-boot.version>
+    <springmvc-mustache.version>0.5.3</springmvc-mustache.version>
+    <jmustache.version>1.14</jmustache.version>
     <slf4j.version>1.7.25</slf4j.version>
     <logback.version>1.2.3</logback.version>
     <guava.version>23.0</guava.version>
@@ -64,6 +66,17 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
       <version>${spring-boot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.mjeanroy</groupId>
+      <artifactId>springmvc-mustache</artifactId>
+      <version>${springmvc-mustache.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.samskivert</groupId>
+      <artifactId>jmustache</artifactId>
+      <version>${jmustache.version}</version>
     </dependency>
 
     <dependency>

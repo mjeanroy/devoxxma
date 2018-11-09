@@ -4,17 +4,20 @@ import com.github.devoxma.twitapp.domain.model.User;
 import com.github.devoxma.twitapp.security.Security;
 import com.github.devoxma.twitapp.security.service.SecurityService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class SecurityInterceptor implements HandlerInterceptor {
+import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
+
+public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Set<String> METHOD_REQUIRES_AUTH = new HashSet<String>() {{
 		add("GET");
@@ -39,8 +42,14 @@ public class SecurityInterceptor implements HandlerInterceptor {
 		if (shouldAuthenticate(handler)) {
 			Optional<User> user = securityService.login(request);
 			boolean isAuthenticated = user.isPresent();
+
 			if (!isAuthenticated) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				if (isApiCall(handler)) {
+					response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				} else {
+					response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
+					response.setHeader("Location", "/login");
+				}
 			}
 
 			return isAuthenticated;
@@ -49,22 +58,27 @@ public class SecurityInterceptor implements HandlerInterceptor {
 		return true;
 	}
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-		// Nothing to do.
+	private static boolean isApiCall(Object handler) {
+		if (isHandlerMethod(handler)) {
+			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			Method method = handlerMethod.getMethod();
+			Class<?> klass = handlerMethod.getBeanType();
+			return findAnnotation(method, ResponseBody.class) != null || findAnnotation(klass, ResponseBody.class) != null;
+		}
+
+		return false;
 	}
 
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-		// Nothing to do.
-	}
-
-	private boolean shouldAuthenticate(Object handler) {
-		if (!(handler instanceof HandlerMethod)) {
+	private static boolean shouldAuthenticate(Object handler) {
+		if (!isHandlerMethod(handler)) {
 			return false;
 		}
 
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		return handlerMethod.hasMethodAnnotation(Security.class) || handlerMethod.getBean().getClass().isAnnotationPresent(Security.class);
+	}
+
+	private static boolean isHandlerMethod(Object handler) {
+		return handler instanceof HandlerMethod;
 	}
 }

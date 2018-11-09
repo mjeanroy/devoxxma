@@ -2,6 +2,7 @@ package com.github.devoxma.twitapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -11,7 +12,7 @@ import javax.servlet.SessionTrackingMode;
 
 import static java.util.Collections.singleton;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = MustacheAutoConfiguration.class)
 public class DevoxMaTwitApplication extends SpringBootServletInitializer {
 
 	@Override

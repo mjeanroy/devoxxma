@@ -1,0 +1,22 @@
+<div>
+    <form name="tweetForm" action="/tweets" method="post">
+      <div class="form-group" style="text-align: center">
+        <input type="hidden" name="login" value="{{principal.login}}"/>
+        <textarea name="message" class="form-control" placeholder="Tweet" required maxlength="140"></textarea>
+        <br>
+        <button id="foo" class="btn btn-success">Tweet!</button>
+      </div>
+    </form>
+
+  <div>
+    <div class="panel panel-default">
+      {{#tweets}}
+        <div class="panel-body">
+          <div>
+            <span class="label label-primary">@{{ login }}</span>&nbsp;<span>{{{ message }}}</span>
+          </div>
+        </div>
+      {{/tweets}}
+    </div>
+  </div>
+</div>
