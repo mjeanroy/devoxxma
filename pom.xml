@@ -126,7 +126,6 @@
             <id>run-npm</id>
             <goals>
               <goal>check</goal>
-              <goal>pre-clean</goal>
               <goal>install</goal>
               <goal>clean</goal>
               <goal>build</goal>

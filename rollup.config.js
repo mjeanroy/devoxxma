@@ -4,10 +4,10 @@ const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
 
 module.exports = {
-  input: path.join(__dirname, 'src', 'main', 'webapp', 'js', 'app.js'),
+  input: path.join(__dirname, 'src', 'main', 'resources', 'static', 'js', 'app.js'),
 
   output: {
-    file: path.join(__dirname, 'src', 'main', 'webapp', 'bundle.js'),
+    file: path.join(__dirname, 'src', 'main', 'resources', 'static', 'bundle.js'),
     name: 'DevoxxMA',
     format: 'iife'
   },

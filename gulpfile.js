@@ -11,7 +11,7 @@ const rollupConfig = require('./rollup.config');
 
 const ROOT = __dirname;
 const NODE_MODULES = path.join(ROOT, 'node_modules');
-const SRC = path.join(ROOT, 'src', 'main', 'webapp');
+const SRC = path.join(ROOT, 'src', 'main', 'resources', 'static');
 const VENDORS = path.join(SRC, 'vendors');
 
 gulp.task('clean', () => (
@@ -30,7 +30,7 @@ gulp.task('vendors', ['clean'], () => {
   });
 });
 
-gulp.task('build', () => (
+gulp.task('build', ['vendors'], () => (
   rollup.rollup(rollupConfig).then((bundle) => (
       bundle.write(rollupConfig.output)
   ))
