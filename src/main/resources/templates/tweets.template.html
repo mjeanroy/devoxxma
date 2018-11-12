@@ -9,11 +9,13 @@
     </form>
 
   <div>
-    <div class="panel panel-default">
+    <div class="card">
       {{#tweets}}
-        <div class="panel-body">
+        <div class="card-body">
           <div>
-            <span class="label label-primary">@{{ login }}</span>&nbsp;<span>{{{ message }}}</span>
+            <span class="badge badge-primary" style="display: inline-block; min-width: 80px">@{{ login }}</span>
+            &nbsp;
+            <span>{{{ message }}}</span>
           </div>
         </div>
       {{/tweets}}
