@@ -17,7 +17,7 @@
     "watch": "gulp watch",
     "dependency:check": "npm run retire",
     "retire": "npm run retire-js",
-    "retire-js": "retire --js --package"
+    "retire-js": "retire --js --package --jspath src/main/resources/static"
   },
   "dependencies": {
     "bootstrap": "3.3.7",
