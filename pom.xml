@@ -20,6 +20,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <spring-boot.version>1.5.2.RELEASE</spring-boot.version>
+
+    <!-- Override Spring-Boot transitive dependencies version -->
+    <!-- Fix Jackson CVE -->
+    <jackson.version>2.9.7</jackson.version>
+    <tomcat.version>8.5.35</tomcat.version>
+
     <springmvc-mustache.version>0.5.3</springmvc-mustache.version>
     <jmustache.version>1.14</jmustache.version>
     <slf4j.version>1.7.25</slf4j.version>
@@ -28,7 +34,9 @@
     <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
     <h2.version>1.4.197</h2.version>
     <hsqldb.version>2.4.1</hsqldb.version>
-    <commons-fileupload.version>1.3</commons-fileupload.version>
+
+    <!-- Use 1.3.3 to fix CVE -->
+    <commons-fileupload.version>1.3.3</commons-fileupload.version>
 
     <dependency-check-maven.version>3.3.4</dependency-check-maven.version>
   </properties>
