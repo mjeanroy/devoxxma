@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run vendors",
+    "postinstall": "npm run vendors --unsafe-perm",
     "clean": "gulp clean",
     "vendors": "gulp vendors",
     "build": "gulp build",
