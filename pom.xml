@@ -145,6 +145,9 @@
         <artifactId>jib-maven-plugin</artifactId>
         <version>0.10.0</version>
         <configuration>
+          <from>
+            <image>houssemba/devoxxma-baseapp:v1</image>
+          </from>
           <to>
             <image>houssemba/devoxxma-twitapp</image>
           </to>
