@@ -6,6 +6,15 @@ function forEach(array, iteratee) {
   }
 }
 
+function map(array, iteratee) {
+  const results = [];
+  for (let i = 0, size = array.length; i < size; ++i) {
+    results.push(iteratee(array[i], i, array));
+  }
+
+  return results;
+}
+
 function every(array, iteratee) {
   for (let i = 0, size = array.length; i < size; ++i) {
     if (!iteratee(array[i], i, array)) {
@@ -59,11 +68,42 @@ function bindForm($form) {
   });
 }
 
-$(document).ready(() => {
+const handlers = {
+  '/users': () => {
+    $('#refresh-btn').on('click', (e) => {
+      e.preventDefault();
+      $.get('/api/users').done((response) => {
+        $('tbody').html(map(response._embedded.users, (user) =>
+            `<tr><td>${user.key}</td><td>${user.login}</td><td>${user.creationDate}</td></tr>`
+        ));
+      });
+    })
+  },
+};
+
+function getCurrentPath() {
+  const location = window.location;
+  const path = location.pathname || '/';
+  return path.charAt(0) !== '/' ? `/${path}` : path;
+}
+
+function bootstrapForms() {
   forEach($(document).find('form'), (form) => {
     const $form = $(form);
-
     checkForm($form);
     bindForm($form);
   });
+}
+
+function bootstrapPage() {
+  const path = getCurrentPath();
+  const handlerFn = handlers[path];
+  if (handlerFn) {
+    handlerFn();
+  }
+}
+
+$(document).ready(() => {
+  bootstrapForms();
+  bootstrapPage();
 });

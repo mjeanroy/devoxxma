@@ -1,5 +1,7 @@
 package com.github.devoxma.twitapp.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,6 +15,8 @@ public class User {
 	private String id;
 	private Date creationDate;
 	private String login;
+
+	@JsonIgnore
 	private String password;
 
 	private User() {
@@ -26,6 +30,10 @@ public class User {
 	}
 
 	public String getId() {
+		return id;
+	}
+
+	public String getKey() {
 		return id;
 	}
 
